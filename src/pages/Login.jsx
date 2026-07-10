@@ -1,6 +1,11 @@
 import React from "react";
 
-const Login = () => {
+const Login = ({ onLogin }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onLogin();
+  };
+
   return (
     <div className="login-page">
       <div className="login-card">
@@ -12,15 +17,15 @@ const Login = () => {
           </div>
         </div>
 
-        <form className="login-form">
+        <form className="login-form" onSubmit={handleSubmit}>
           <label>
             <span>Email</span>
-            <input type="email" placeholder="you@example.com" />
+            <input type="email" placeholder="you@example.com" required />
           </label>
 
           <label>
             <span>Password</span>
-            <input type="password" placeholder="••••••••" />
+            <input type="password" placeholder="••••••••" required />
           </label>
 
           <button type="submit">Log In</button>

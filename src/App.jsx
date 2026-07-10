@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "./pages/Login";
+import AiDorixonaBanner from "./Carusel";
 
 const App = () => {
-  return <Login />;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  return isLoggedIn ? <AiDorixonaBanner /> : <Login onLogin={handleLogin} />;
 };
 
 export default App;
