@@ -92,7 +92,17 @@ function Arrow({ dir, onClick }) {
 
 export default function AiDorixonaBanner() {
   const [current, setCurrent] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const timerRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const goTo = (i) => setCurrent(i);
   const move = (dir) => setCurrent((c) => (c + dir + SLIDES.length) % SLIDES.length);
@@ -103,13 +113,21 @@ export default function AiDorixonaBanner() {
   }, [current]);
 
   return (
-    <div style={{ fontFamily: "Inter, sans-serif", color: COLORS.ink, maxWidth: 1120, margin: "0 auto", padding: "24px 16px" }}>
+    <div
+      style={{
+        fontFamily: "Inter, sans-serif",
+        color: COLORS.ink,
+        maxWidth: 1120,
+        margin: "0 auto",
+        padding: isMobile ? "16px 12px" : "24px 16px",
+      }}
+    >
       <div
         style={{
           position: "relative",
           borderRadius: 22,
           overflow: "hidden",
-          height: 360,
+          height: isMobile ? 280 : 360,
           boxShadow: "0 12px 30px -14px rgba(11,61,77,.35)",
           background: COLORS.navy,
         }}
@@ -131,32 +149,34 @@ export default function AiDorixonaBanner() {
                 position: "relative",
                 display: "flex",
                 alignItems: "center",
-                padding: "0 64px",
+                padding: isMobile ? "0 24px" : "0 64px",
                 background: s.bg,
                 overflow: "hidden",
               }}
             >
-              <svg
-                viewBox="0 0 200 200"
-                style={{
-                  position: "absolute",
-                  right: -40,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  width: 480,
-                  height: 480,
-                  opacity: 0.16,
-                  stroke: "#fff",
-                  fill: "none",
-                  strokeWidth: 2,
-                }}
-              >
-                <path d="M20 100h30v-40h40v80h40v-60h50" />
-                <circle cx="20" cy="100" r="4" fill="#fff" stroke="none" />
-                <circle cx="90" cy="60" r="4" fill="#fff" stroke="none" />
-                <circle cx="130" cy="140" r="4" fill="#fff" stroke="none" />
-                <circle cx="180" cy="80" r="4" fill="#fff" stroke="none" />
-              </svg>
+              {!isMobile && (
+                <svg
+                  viewBox="0 0 200 200"
+                  style={{
+                    position: "absolute",
+                    right: -40,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    width: 480,
+                    height: 480,
+                    opacity: 0.16,
+                    stroke: "#fff",
+                    fill: "none",
+                    strokeWidth: 2,
+                  }}
+                >
+                  <path d="M20 100h30v-40h40v80h40v-60h50" />
+                  <circle cx="20" cy="100" r="4" fill="#fff" stroke="none" />
+                  <circle cx="90" cy="60" r="4" fill="#fff" stroke="none" />
+                  <circle cx="130" cy="140" r="4" fill="#fff" stroke="none" />
+                  <circle cx="180" cy="80" r="4" fill="#fff" stroke="none" />
+                </svg>
+              )}
 
               <div style={{ position: "relative", zIndex: 2, maxWidth: 560 }}>
                 <span
@@ -166,24 +186,40 @@ export default function AiDorixonaBanner() {
                     gap: 6,
                     background: "rgba(255,255,255,.14)",
                     color: "#fff",
-                    fontSize: 12.5,
+                    fontSize: isMobile ? 11 : 12.5,
                     fontWeight: 600,
-                    padding: "6px 14px",
+                    padding: "6px 12px",
                     borderRadius: 999,
-                    marginBottom: 16,
+                    marginBottom: isMobile ? 12 : 16,
                   }}
                 >
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#5FD6A5" }} />
                   {s.eyebrow}
                 </span>
 
-                <h2 style={{ fontWeight: 700, fontSize: 34, lineHeight: 1.18, color: "#fff", margin: "0 0 12px" }}>
+                <h2
+                  style={{
+                    fontWeight: 700,
+                    fontSize: isMobile ? 22 : 34,
+                    lineHeight: 1.18,
+                    color: "#fff",
+                    margin: "0 0 12px",
+                  }}
+                >
                   {s.title[0]}
                   <span style={{ color: "#5FD6A5" }}>{s.title[1]}</span>
                   {s.title[2]}
                 </h2>
 
-                <p style={{ fontSize: 15, lineHeight: 1.6, color: "rgba(255,255,255,.82)", maxWidth: 440, marginBottom: 26 }}>
+                <p
+                  style={{
+                    fontSize: isMobile ? 13 : 15,
+                    lineHeight: 1.6,
+                    color: "rgba(255,255,255,.82)",
+                    maxWidth: 440,
+                    marginBottom: isMobile ? 16 : 26,
+                  }}
+                >
                   {s.desc}
                 </p>
 
@@ -195,53 +231,80 @@ export default function AiDorixonaBanner() {
                     background: "#fff",
                     color: COLORS.navy,
                     fontWeight: 600,
-                    fontSize: 14.5,
-                    padding: "12px 22px",
+                    fontSize: isMobile ? 13 : 14.5,
+                    padding: isMobile ? "10px 16px" : "12px 22px",
                     borderRadius: 999,
                     border: "none",
                     cursor: "pointer",
                   }}
                 >
                   {s.cta}
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                  >
                     <path d="M5 12h14M13 6l6 6-6 6" />
                   </svg>
                 </button>
               </div>
 
-              <div
-                style={{
-                  position: "absolute",
-                  right: 56,
-                  top: 28,
-                  background: "rgba(255,255,255,.12)",
-                  border: "1px solid rgba(255,255,255,.25)",
-                  borderRadius: 14,
-                  padding: "12px 16px",
-                  color: "#fff",
-                  zIndex: 2,
-                }}
-              >
-                <b style={{ display: "block", fontSize: 19, fontWeight: 700 }}>{s.stat.value}</b>
-                <span style={{ fontSize: 11.5, color: "rgba(255,255,255,.75)" }}>{s.stat.label}</span>
-              </div>
+              {!isMobile && (
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 56,
+                    top: 28,
+                    background: "rgba(255,255,255,.12)",
+                    border: "1px solid rgba(255,255,255,.25)",
+                    borderRadius: 14,
+                    padding: "12px 16px",
+                    color: "#fff",
+                    zIndex: 2,
+                  }}
+                >
+                  <b style={{ display: "block", fontSize: 19, fontWeight: 700 }}>
+                    {s.stat.value}
+                  </b>
+                  <span style={{ fontSize: 11.5, color: "rgba(255,255,255,.75)" }}>
+                    {s.stat.label}
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        <Arrow dir={-1} onClick={() => move(-1)} />
-        <Arrow dir={1} onClick={() => move(1)} />
+        {!isMobile && (
+          <>
+            <Arrow dir={-1} onClick={() => move(-1)} />
+            <Arrow dir={1} onClick={() => move(1)} />
+          </>
+        )}
 
-        <div style={{ position: "absolute", left: 64, bottom: 24, zIndex: 3, display: "flex", gap: 8 }}>
+        <div
+          style={{
+            position: "absolute",
+            left: isMobile ? 16 : 64,
+            bottom: 16,
+            zIndex: 3,
+            display: "flex",
+            gap: 8,
+          }}
+        >
           {SLIDES.map((_, i) => (
             <div
               key={i}
               onClick={() => goTo(i)}
               style={{
-                width: i === current ? 46 : 30,
-                height: 10,
+                width: i === current ? (isMobile ? 36 : 46) : 20,
+                height: 8,
                 borderRadius: 999,
-                background: i === current ? "rgba(255,255,255,.35)" : "rgba(255,255,255,.3)",
+                background:
+                  i === current ? "rgba(255,255,255,.35)" : "rgba(255,255,255,.3)",
                 cursor: "pointer",
                 transition: "width .3s ease",
               }}
@@ -250,28 +313,35 @@ export default function AiDorixonaBanner() {
         </div>
       </div>
 
-      <div style={{ display: "flex", gap: 12, marginTop: 18, flexWrap: "wrap" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: isMobile ? 10 : 12,
+          marginTop: isMobile ? 14 : 18,
+          flexWrap: "wrap",
+        }}
+      >
         {QUICKLINKS.map((q, i) => (
           <div
             key={i}
             style={{
-              flex: "1 1 200px",
+              flex: isMobile ? "1 1 calc(50% - 5px)" : "1 1 200px",
               background: "#fff",
               border: "1px solid #E3EFE9",
               borderRadius: 14,
-              padding: "14px 16px",
+              padding: isMobile ? "12px 12px" : "14px 16px",
               display: "flex",
               alignItems: "center",
-              gap: 12,
-              fontSize: 13.5,
+              gap: isMobile ? 10 : 12,
+              fontSize: isMobile ? 12.5 : 13.5,
               fontWeight: 500,
               cursor: "pointer",
             }}
           >
             <div
               style={{
-                width: 34,
-                height: 34,
+                width: isMobile ? 32 : 34,
+                height: isMobile ? 32 : 34,
                 borderRadius: 10,
                 background: q.bg,
                 display: "flex",
@@ -280,18 +350,41 @@ export default function AiDorixonaBanner() {
                 flexShrink: 0,
               }}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={q.stroke} strokeWidth="2">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={q.stroke}
+                strokeWidth="2"
+              >
                 {q.rect && <rect x="3" y="4" width="18" height="16" rx="2" />}
-                {q.doc && <path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />}
+                {q.doc && (
+                  <path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />
+                )}
                 <path d={q.path} />
               </svg>
             </div>
-            <div>
-              {q.label}
-              <small style={{ display: "block", color: COLORS.inkSoft, fontWeight: 400, fontSize: 11.5, marginTop: 1 }}>
-                {q.sub}
-              </small>
-            </div>
+            {!isMobile ? (
+              <div>
+                {q.label}
+                <small
+                  style={{
+                    display: "block",
+                    color: COLORS.inkSoft,
+                    fontWeight: 400,
+                    fontSize: 11.5,
+                    marginTop: 1,
+                  }}
+                >
+                  {q.sub}
+                </small>
+              </div>
+            ) : (
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600 }}>{q.label}</div>
+              </div>
+            )}
           </div>
         ))}
       </div>
